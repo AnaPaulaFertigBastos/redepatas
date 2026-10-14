@@ -1,0 +1,261 @@
+<mxfile host="app.diagrams.net" pages="2">
+  <diagram id="architecture-overview" name="1 - Visão geral">
+    <mxGraphModel dx="2049" dy="1088" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1800" pageHeight="1180" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" parent="1" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;strokeColor=none;fillColor=none;fontColor=#243647;fontSize=26;fontStyle=1;" value="RedePatas | arquitetura lógica" vertex="1">
+          <mxGeometry height="42" width="900" x="40" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="subtitle" parent="1" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;strokeColor=none;fillColor=none;fontColor=#243647;fontSize=15;fontStyle=0;" value="Verde: Flutter  •  Azul: backend e banco de dados&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(36, 54, 71), rgb(180, 195, 210));&quot;&gt;&amp;nbsp;•  Bege: serviço ou dado externo&lt;/span&gt;" vertex="1">
+          <mxGeometry height="30" width="1280" x="40" y="67" as="geometry" />
+        </mxCell>
+        <mxCell id="flutter" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingTop=13;spacingLeft=16;container=0;dashed=1;dashPattern=6 4;fillColor=#e6f4ea;strokeColor=#43865b;strokeWidth=1.7;fontColor=#263b4c;fontSize=18;fontStyle=1;" value="Aplicativo Flutter" vertex="1">
+          <mxGeometry height="690" width="500" x="40" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="api" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingTop=13;spacingLeft=16;container=0;dashed=1;dashPattern=6 4;fillColor=#e8f1fc;strokeColor=#4f7eac;strokeWidth=1.7;fontColor=#263b4c;fontSize=18;fontStyle=1;" value="API ASP.NET Core (C#) — planejada" vertex="1">
+          <mxGeometry height="690" width="500" x="650" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="database" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingTop=13;spacingLeft=16;container=0;dashed=1;dashPattern=6 4;fillColor=#e8f1fc;strokeColor=#4f7eac;strokeWidth=1.7;fontColor=#263b4c;fontSize=18;fontStyle=1;" value="PostgreSQL + PostGIS — planejado" vertex="1">
+          <mxGeometry height="690" width="490" x="1260" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="ui" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;shadow=0;fillColor=#e6f4ea;strokeColor=#43865b;strokeWidth=1.6;fontColor=#243647;fontSize=15;fontStyle=1;" value="Telas: login, mapa, filtros, cadastro,&lt;br&gt;detalhes, histórico e alertas" vertex="1">
+          <mxGeometry height="82" width="440" x="70" y="205" as="geometry" />
+        </mxCell>
+        <mxCell id="auth_state" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;shadow=0;fillColor=#e6f4ea;strokeColor=#43865b;strokeWidth=1.6;fontColor=#243647;fontSize=15;fontStyle=1;" value="AuthController&lt;br&gt;estado da sessão" vertex="1">
+          <mxGeometry height="95" width="205" x="70" y="330" as="geometry" />
+        </mxCell>
+        <mxCell id="data_contract" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;shadow=0;fillColor=#e6f4ea;strokeColor=#43865b;strokeWidth=1.6;fontColor=#243647;fontSize=15;fontStyle=1;" value="RedePatasRepository&lt;br&gt;contrato dos dados" vertex="1">
+          <mxGeometry height="95" width="205" x="305" y="330" as="geometry" />
+        </mxCell>
+        <mxCell id="secure_store" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;shadow=0;fillColor=#e6f4ea;strokeColor=#43865b;strokeWidth=1.6;fontColor=#243647;fontSize=14;fontStyle=0;" value="SecureSessionStore&lt;br&gt;tokens no dispositivo" vertex="1">
+          <mxGeometry height="90" width="205" x="70" y="465" as="geometry" />
+        </mxCell>
+        <mxCell id="api_auth_client" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;shadow=0;fillColor=#e6f4ea;strokeColor=#43865b;strokeWidth=1.6;fontColor=#243647;fontSize=14;fontStyle=0;" value="ApiAuthService&lt;br&gt;cliente HTTP pronto" vertex="1">
+          <mxGeometry height="90" width="205" x="305" y="465" as="geometry" />
+        </mxCell>
+        <mxCell id="mocks" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;shadow=0;fillColor=#e6f4ea;strokeColor=#43865b;strokeWidth=1.6;fontColor=#243647;fontSize=14;fontStyle=0;" value="MockAuthService + MockRedePatasRepository&lt;br&gt;dados locais em memória" vertex="1">
+          <mxGeometry height="95" width="440" x="70" y="605" as="geometry" />
+        </mxCell>
+        <mxCell id="controllers" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;shadow=0;fillColor=#e8f1fc;strokeColor=#4f7eac;strokeWidth=1.6;fontColor=#243647;fontSize=15;fontStyle=1;" value="Endpoints REST + validação de entrada" vertex="1">
+          <mxGeometry height="82" width="440" x="680" y="205" as="geometry" />
+        </mxCell>
+        <mxCell id="auth_service" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;shadow=0;fillColor=#e8f1fc;strokeColor=#4f7eac;strokeWidth=1.6;fontColor=#243647;fontSize=14;fontStyle=0;" value="Autenticação&lt;br&gt;login, JWT" vertex="1">
+          <mxGeometry height="100" width="205" x="680" y="330" as="geometry" />
+        </mxCell>
+        <mxCell id="point_service" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;shadow=0;fillColor=#e8f1fc;strokeColor=#4f7eac;strokeWidth=1.6;fontColor=#243647;fontSize=14;fontStyle=0;" value="Pontos e animais&lt;br&gt;consultas, cadastro e histórico" vertex="1">
+          <mxGeometry height="100" width="205" x="915" y="330" as="geometry" />
+        </mxCell>
+        <mxCell id="spatial_service" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;shadow=0;fillColor=#e8f1fc;strokeColor=#4f7eac;strokeWidth=1.6;fontColor=#243647;fontSize=14;fontStyle=0;" value="Localização&lt;br&gt;raio, área e município, fotos" vertex="1">
+          <mxGeometry height="100" width="205" x="680" y="485" as="geometry" />
+        </mxCell>
+        <mxCell id="alert_service" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;shadow=0;fillColor=#e8f1fc;strokeColor=#4f7eac;strokeWidth=1.6;fontColor=#243647;fontSize=14;fontStyle=0;" value="Alertas&lt;br&gt;preferências e envio push" vertex="1">
+          <mxGeometry height="100" width="205" x="915" y="485" as="geometry" />
+        </mxCell>
+        <mxCell id="persistence" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;shadow=0;fillColor=#e8f1fc;strokeColor=#4f7eac;strokeWidth=1.6;fontColor=#243647;fontSize=14;fontStyle=0;" value="Persistência (EF Core / Npgsql)&lt;br&gt;transações, migrações e índices" vertex="1">
+          <mxGeometry height="90" width="440" x="680" y="650" as="geometry" />
+        </mxCell>
+        <mxCell id="postgres" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;shadow=0;fillColor=#e8f1fc;strokeColor=#4f7eac;strokeWidth=1.6;fontColor=#243647;fontSize=16;fontStyle=1;" value="PostgreSQL&lt;br&gt;dados persistentes" vertex="1">
+          <mxGeometry height="90" width="430" x="1290" y="205" as="geometry" />
+        </mxCell>
+        <mxCell id="tables" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;shadow=0;fillColor=#e8f1fc;strokeColor=#4f7eac;strokeWidth=1.6;fontColor=#243647;fontSize=14;fontStyle=0;" value="Usuário • ponto e recurso&lt;br&gt;manutenção • animal e avistamento&lt;br&gt;foto • município/UF • alertas" vertex="1">
+          <mxGeometry height="155" width="430" x="1290" y="355" as="geometry" />
+        </mxCell>
+        <mxCell id="postgis" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;shadow=0;fillColor=#e8f1fc;strokeColor=#4f7eac;strokeWidth=1.6;fontColor=#243647;fontSize=14;fontStyle=0;" value="PostGIS&lt;br&gt;coordenadas, índices espaciais,&lt;br&gt;busca por raio e limites municipais" vertex="1">
+          <mxGeometry height="130" width="430" x="1290" y="570" as="geometry" />
+        </mxCell>
+        <mxCell id="external_title" parent="1" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;strokeColor=none;fillColor=none;fontColor=#243647;fontSize=19;fontStyle=1;" value="Integrações e dados externos" vertex="1">
+          <mxGeometry height="32" width="800" x="40" y="860" as="geometry" />
+        </mxCell>
+        <mxCell id="gps" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;shadow=0;fillColor=#f4f0e7;strokeColor=#9e865e;strokeWidth=1.6;fontColor=#243647;fontSize=14;fontStyle=0;" value="GPS do dispositivo" vertex="1">
+          <mxGeometry height="90" width="270" x="40" y="920" as="geometry" />
+        </mxCell>
+        <mxCell id="push" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;shadow=0;fillColor=#f4f0e7;strokeColor=#9e865e;strokeWidth=1.6;fontColor=#243647;fontSize=14;fontStyle=0;" value="Serviço de push&lt;br&gt;a definir" vertex="1">
+          <mxGeometry height="90" width="290" x="370" y="920" as="geometry" />
+        </mxCell>
+        <mxCell id="ibge" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;shadow=0;fillColor=#f4f0e7;strokeColor=#9e865e;strokeWidth=1.6;fontColor=#243647;fontSize=14;fontStyle=0;" value="Catálogo e limites&lt;br&gt;municipais do IBGE" vertex="1">
+          <mxGeometry height="90" width="420" x="710" y="920" as="geometry" />
+        </mxCell>
+        <mxCell id="o1" edge="1" parent="1" source="ui" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#60788e;strokeWidth=1.8;fontColor=#33485b;fontSize=12;labelBackgroundColor=#ffffff;dashed=0;" target="auth_state" value="login / sessão">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="o2" edge="1" parent="1" source="ui" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#60788e;strokeWidth=1.8;fontColor=#33485b;fontSize=12;labelBackgroundColor=#ffffff;dashed=0;" target="data_contract" value="dados do mapa">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="o3" edge="1" parent="1" source="auth_state" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#60788e;strokeWidth=1.8;fontColor=#33485b;fontSize=12;labelBackgroundColor=#ffffff;dashed=0;" target="secure_store" value="salva / restaura">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="o4" edge="1" parent="1" source="auth_state" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#60788e;strokeWidth=1.8;fontColor=#33485b;fontSize=12;labelBackgroundColor=#ffffff;dashed=0;" target="api_auth_client" value="usa">
+          <mxGeometry relative="1" x="-0.2636" as="geometry">
+            <Array as="points">
+              <mxPoint x="300" y="377.5" />
+              <mxPoint x="300" y="460" />
+              <mxPoint x="407.5" y="460" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="o5" edge="1" parent="1" source="data_contract" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#60788e;strokeWidth=1.8;fontColor=#33485b;fontSize=12;labelBackgroundColor=#ffffff;dashed=0;" target="mocks" value="hoje">
+          <mxGeometry relative="1" x="-0.1045" as="geometry">
+            <Array as="points">
+              <mxPoint x="290" y="400" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="o7" edge="1" parent="1" source="api_auth_client" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#60788e;strokeWidth=1.8;fontColor=#33485b;fontSize=12;labelBackgroundColor=#ffffff;dashed=1;" target="controllers" value="HTTPS/JSON">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="590" y="510" />
+              <mxPoint x="590" y="246" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="o9" edge="1" parent="1" source="controllers" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#60788e;strokeWidth=1.8;fontColor=#33485b;fontSize=12;labelBackgroundColor=#ffffff;dashed=0;" target="auth_service" value="autenticação">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="o10" edge="1" parent="1" source="controllers" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#60788e;strokeWidth=1.8;fontColor=#33485b;fontSize=12;labelBackgroundColor=#ffffff;dashed=0;" target="point_service" value="operações">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="o11" edge="1" parent="1" source="point_service" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#60788e;strokeWidth=1.8;fontColor=#33485b;fontSize=12;labelBackgroundColor=#ffffff;dashed=0;" target="spatial_service" value="consultas">
+          <mxGeometry relative="1" x="0.0069" as="geometry">
+            <Array as="points">
+              <mxPoint x="1017.5" y="450" />
+              <mxPoint x="782.5" y="450" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="o12" edge="1" parent="1" source="point_service" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#60788e;strokeWidth=1.8;fontColor=#33485b;fontSize=12;labelBackgroundColor=#ffffff;dashed=0;" target="alert_service" value="eventos">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="o13" edge="1" parent="1" source="auth_service" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#60788e;strokeWidth=1.8;fontColor=#33485b;fontSize=12;labelBackgroundColor=#ffffff;dashed=0;" target="persistence" value="grava / lê">
+          <mxGeometry relative="1" x="0.3642" as="geometry">
+            <Array as="points">
+              <mxPoint x="660" y="380" />
+              <mxPoint x="660" y="695" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="o14" edge="1" parent="1" source="spatial_service" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#60788e;strokeWidth=1.8;fontColor=#33485b;fontSize=12;labelBackgroundColor=#ffffff;dashed=0;" target="persistence" value="consulta">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="o15" edge="1" parent="1" source="alert_service" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#60788e;strokeWidth=1.8;fontColor=#33485b;fontSize=12;labelBackgroundColor=#ffffff;dashed=0;" target="persistence" value="consulta">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="o16" edge="1" parent="1" source="persistence" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#60788e;strokeWidth=1.8;fontColor=#33485b;fontSize=12;labelBackgroundColor=#ffffff;dashed=0;" target="postgres" value="SQL">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1220" y="695" />
+              <mxPoint x="1220" y="250" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="o17" edge="1" parent="1" source="postgres" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#60788e;strokeWidth=1.8;fontColor=#33485b;fontSize=12;labelBackgroundColor=#ffffff;dashed=0;" target="tables" value="armazena">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="o18" edge="1" parent="1" source="tables" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#60788e;strokeWidth=1.8;fontColor=#33485b;fontSize=12;labelBackgroundColor=#ffffff;dashed=0;" target="postgis" value="geometria / índices">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="architecture-flows" name="2 - Fluxos e responsabilidades">
+    <mxGraphModel dx="1800" dy="1200" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1800" pageHeight="1400" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" value="RedePatas | fluxos principais" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;strokeColor=none;fillColor=none;fontColor=#243647;fontSize=26;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="20" width="1200" height="42" as="geometry" />
+        </mxCell>
+        <mxCell id="subtitle" value="Cada linha mostra a responsabilidade do Flutter, da API C# e do PostgreSQL/PostGIS. Setas azuis representam a integração planejada." style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;strokeColor=none;fillColor=none;fontColor=#243647;fontSize=15;fontStyle=0;" vertex="1" parent="1">
+          <mxGeometry x="40" y="68" width="1650" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="h_fl" value="Flutter" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;shadow=0;fillColor=#ffffff;strokeColor=#94a3b4;strokeWidth=1.6;fontColor=#243647;fontSize=18;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="130" width="540" height="58" as="geometry" />
+        </mxCell>
+        <mxCell id="h_api" value="API C#" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;shadow=0;fillColor=#ffffff;strokeColor=#94a3b4;strokeWidth=1.6;fontColor=#243647;fontSize=18;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="630" y="130" width="540" height="58" as="geometry" />
+        </mxCell>
+        <mxCell id="h_db" value="PostgreSQL / PostGIS" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;shadow=0;fillColor=#ffffff;strokeColor=#94a3b4;strokeWidth=1.6;fontColor=#243647;fontSize=18;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1220" y="130" width="540" height="58" as="geometry" />
+        </mxCell>
+        <mxCell id="auth_h" value="1. Login e sessão" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;strokeColor=none;fillColor=none;fontColor=#243647;fontSize=18;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="220" width="490" height="32" as="geometry" />
+        </mxCell>
+        <mxCell id="auth_fl" value="AuthController → ApiAuthService&lt;br&gt;POST /api/auth/login; GET /me; refresh&lt;br&gt;SecureSessionStore salva tokens" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;shadow=0;fillColor=#e6f4ea;strokeColor=#43865b;strokeWidth=1.6;fontColor=#243647;fontSize=14;fontStyle=0;" vertex="1" parent="1">
+          <mxGeometry x="40" y="270" width="540" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="auth_api" value="Valida senha; emite access token&lt;br&gt;e refresh token rotativo; valida Bearer&lt;br&gt;em cada endpoint protegido" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;shadow=0;fillColor=#e8f1fc;strokeColor=#4f7eac;strokeWidth=1.6;fontColor=#243647;fontSize=14;fontStyle=0;" vertex="1" parent="1">
+          <mxGeometry x="630" y="270" width="540" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="auth_db" value="USUARIO + TOKEN_RENOVACAO&lt;br&gt;hash da senha e hash do refresh token" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;shadow=0;fillColor=#e8f1fc;strokeColor=#4f7eac;strokeWidth=1.6;fontColor=#243647;fontSize=14;fontStyle=0;" vertex="1" parent="1">
+          <mxGeometry x="1220" y="270" width="540" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="f1" value="HTTPS/JSON" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#60788e;strokeWidth=1.8;fontColor=#33485b;fontSize=12;labelBackgroundColor=#ffffff;dashed=1;" edge="1" parent="1" source="auth_fl" target="auth_api">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f2" value="lê / grava" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#60788e;strokeWidth=1.8;fontColor=#33485b;fontSize=12;labelBackgroundColor=#ffffff;dashed=0;" edge="1" parent="1" source="auth_api" target="auth_db">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="search_h" value="2. Mapa, filtros e cidade" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;strokeColor=none;fillColor=none;fontColor=#243647;fontSize=18;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="440" width="600" height="32" as="geometry" />
+        </mxCell>
+        <mxCell id="search_fl" value="GPS / área visível / filtros&lt;br&gt;GET /api/points?bbox=&amp;amp;municipioCodigoIbge=&amp;amp;resource=&lt;br&gt;repositório HTTP alimenta o mapa" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;shadow=0;fillColor=#e8f1fc;strokeColor=#4f7eac;strokeWidth=1.6;fontColor=#243647;fontSize=14;fontStyle=0;" vertex="1" parent="1">
+          <mxGeometry x="40" y="490" width="540" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="search_api" value="Valida filtros e pagina resultados&lt;br&gt;combina recurso, situação, área e raio&lt;br&gt;retorna distância e cidade" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;shadow=0;fillColor=#e8f1fc;strokeColor=#4f7eac;strokeWidth=1.6;fontColor=#243647;fontSize=14;fontStyle=0;" vertex="1" parent="1">
+          <mxGeometry x="630" y="490" width="540" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="search_db" value="PONTO_APOIO + PONTO_RECURSO&lt;br&gt;FK municipio_codigo_ibge para filtro por cidade&lt;br&gt;PostGIS para proximidade / área" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;shadow=0;fillColor=#e8f1fc;strokeColor=#4f7eac;strokeWidth=1.6;fontColor=#243647;fontSize=14;fontStyle=0;" vertex="1" parent="1">
+          <mxGeometry x="1220" y="490" width="540" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="f3" value="GET" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#60788e;strokeWidth=1.8;fontColor=#33485b;fontSize=12;labelBackgroundColor=#ffffff;dashed=1;" edge="1" parent="1" source="search_fl" target="search_api">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f4" value="SQL + índice" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#60788e;strokeWidth=1.8;fontColor=#33485b;fontSize=12;labelBackgroundColor=#ffffff;dashed=0;" edge="1" parent="1" source="search_api" target="search_db">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="create_h" value="3. Cadastro de ponto e foto" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;strokeColor=none;fillColor=none;fontColor=#243647;fontSize=18;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="670" width="600" height="32" as="geometry" />
+        </mxCell>
+        <mxCell id="create_fl" value="Envia latitude e longitude WGS84,&lt;br&gt;recursos e foto; mostra resultado&lt;br&gt;somente após confirmação da API" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;shadow=0;fillColor=#e8f1fc;strokeColor=#4f7eac;strokeWidth=1.6;fontColor=#243647;fontSize=14;fontStyle=0;" vertex="1" parent="1">
+          <mxGeometry x="40" y="720" width="540" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="create_api" value="Valida dados e autorização; salva foto&lt;br&gt;classifica município pelas coordenadas&lt;br&gt;grava ponto e recursos em transação" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;shadow=0;fillColor=#e8f1fc;strokeColor=#4f7eac;strokeWidth=1.6;fontColor=#243647;fontSize=14;fontStyle=0;" vertex="1" parent="1">
+          <mxGeometry x="630" y="720" width="540" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="create_db" value="PONTO_APOIO + PONTO_RECURSO + FOTO&lt;br&gt;MUNICIPIO/UF e limite espacial&lt;br&gt;latitude/longitude continuam canônicas" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;shadow=0;fillColor=#e8f1fc;strokeColor=#4f7eac;strokeWidth=1.6;fontColor=#243647;fontSize=14;fontStyle=0;" vertex="1" parent="1">
+          <mxGeometry x="1220" y="720" width="540" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="f5" value="POST /api/points" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#60788e;strokeWidth=1.8;fontColor=#33485b;fontSize=12;labelBackgroundColor=#ffffff;dashed=1;" edge="1" parent="1" source="create_fl" target="create_api">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f6" value="INSERT + ST_Covers" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#60788e;strokeWidth=1.8;fontColor=#33485b;fontSize=12;labelBackgroundColor=#ffffff;dashed=0;" edge="1" parent="1" source="create_api" target="create_db">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="maintenance_h" value="4. Manutenção e alertas" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;strokeColor=none;fillColor=none;fontColor=#243647;fontSize=18;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="900" width="600" height="32" as="geometry" />
+        </mxCell>
+        <mxCell id="maintenance_fl" value="Registra abastecimento ou falta&lt;br&gt;acompanha pontos; recebe push&lt;br&gt;e abre o ponto correspondente" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;shadow=0;fillColor=#e8f1fc;strokeColor=#4f7eac;strokeWidth=1.6;fontColor=#243647;fontSize=14;fontStyle=0;" vertex="1" parent="1">
+          <mxGeometry x="40" y="950" width="540" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="maintenance_api" value="Autoriza e registra manutenção&lt;br&gt;atualiza situação do recurso na transação&lt;br&gt;job consulta preferências e envia push" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;shadow=0;fillColor=#e8f1fc;strokeColor=#4f7eac;strokeWidth=1.6;fontColor=#243647;fontSize=14;fontStyle=0;" vertex="1" parent="1">
+          <mxGeometry x="630" y="950" width="540" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="maintenance_db" value="MANUTENCAO + PONTO_RECURSO&lt;br&gt;PONTO_SEGUIDO + PREFERENCIA_ALERTA&lt;br&gt;DISPOSITIVO + NOTIFICACAO" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;shadow=0;fillColor=#e8f1fc;strokeColor=#4f7eac;strokeWidth=1.6;fontColor=#243647;fontSize=14;fontStyle=0;" vertex="1" parent="1">
+          <mxGeometry x="1220" y="950" width="540" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="f7" value="POST /maintenance" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#60788e;strokeWidth=1.8;fontColor=#33485b;fontSize=12;labelBackgroundColor=#ffffff;dashed=1;" edge="1" parent="1" source="maintenance_fl" target="maintenance_api">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f8" value="transação + consulta" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#60788e;strokeWidth=1.8;fontColor=#33485b;fontSize=12;labelBackgroundColor=#ffffff;dashed=0;" edge="1" parent="1" source="maintenance_api" target="maintenance_db">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="city_note" value="Cidade: a API deriva municipio_codigo_ibge de (longitude, latitude) usando o limite municipal no PostGIS. O Flutter envia coordenadas; a UF vem do município. Sem correspondência confiável, o código permanece nulo até revisão." style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;shadow=0;fillColor=#fff7df;strokeColor=#c69d36;strokeWidth=1.6;fontColor=#243647;fontSize=15;fontStyle=0;" vertex="1" parent="1">
+          <mxGeometry x="40" y="1150" width="1720" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="refs" value="Modelo de dados detalhado: MODELO_LOGICO_BANCO.md e modelo_logico_redepatas.drawio" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;strokeColor=none;fillColor=none;fontColor=#243647;fontSize=14;fontStyle=0;" vertex="1" parent="1">
+          <mxGeometry x="40" y="1310" width="1700" height="32" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
