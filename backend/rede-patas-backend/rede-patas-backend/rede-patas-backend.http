@@ -1,0 +1,6 @@
+@rede_patas_backend_HostAddress = http://localhost:5231
+
+GET {{rede_patas_backend_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
