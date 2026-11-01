@@ -5,9 +5,58 @@ import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
 import 'package:redepatas/auth/api_auth_service.dart';
 import 'package:redepatas/auth/auth_session.dart';
+import 'package:redepatas/auth/auth_service.dart';
 import 'package:redepatas/auth/session_store.dart';
 
 void main() {
+  test('cadastro envia os dados normalizados e salva a sessão', () async {
+    final store = MemorySessionStore();
+    final client = MockClient((request) async {
+      expect(request.method, 'POST');
+      expect(request.url.path, '/api/auth/register');
+      expect(jsonDecode(request.body), {
+        'name': 'Ana',
+        'email': 'ana@example.com',
+        'password': 'senha1234',
+      });
+      return http.Response(jsonEncode(_payload('registered')), 201);
+    });
+    addTearDown(client.close);
+    final service = ApiAuthService(
+      baseUrl: 'https://example.test/',
+      store: store,
+      client: client,
+    );
+    final session = await service.register(
+      ' Ana ',
+      ' ANA@example.com ',
+      'senha1234',
+    );
+    expect(session.name, 'Ana');
+    expect(
+      AuthSession.fromJson((await store.read())!).accessToken,
+      'registered',
+    );
+  });
+
+  test('e-mail duplicado e dados inválidos não salvam sessão', () async {
+    for (final status in [409, 400]) {
+      final store = MemorySessionStore();
+      final client = MockClient((_) async => http.Response('{}', status));
+      final service = ApiAuthService(
+        baseUrl: 'https://example.test',
+        store: store,
+        client: client,
+      );
+      await expectLater(
+        service.register('Ana', 'ana@example.com', 'senha1234'),
+        throwsA(isA<AuthException>()),
+      );
+      expect(await store.read(), isNull);
+      client.close();
+    }
+  });
+
   test('login, validação, renovação e logout seguem o contrato HTTP', () async {
     final calls = <String>[];
     final client = MockClient((request) async {

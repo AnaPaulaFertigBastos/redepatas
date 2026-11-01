@@ -6,9 +6,9 @@ using Microsoft.AspNetCore.Localization;
 using System.Globalization;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
+using rede_patas_backend.Models;
 using System.Text.Json.Serialization;
-using System.Globalization;
-using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.RateLimiting;
 using System.Threading.RateLimiting;
 
@@ -41,8 +41,10 @@ builder.Services
         );
     });
 
+builder.Services.AddScoped<IPasswordHasher<Usuario>, PasswordHasher<Usuario>>();
 builder.Services
-    .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddAuthentication("Bearer")
+    .AddBearerToken("Bearer")
     .AddCookie(options =>
     {
         options.Cookie.Name = ".AspNetCore.Cookies";
@@ -105,6 +107,14 @@ builder.Services.AddSession();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 var app = builder.Build();
+
+// Apply the reviewed migrations explicitly, without changing the database on every startup.
+if (args.Contains("--migrate"))
+{
+    using var scope = app.Services.CreateScope();
+    await scope.ServiceProvider.GetRequiredService<ApiContext>().Database.MigrateAsync();
+    return;
+}
 
 app.UseCors("AllowAllLocalHost");
 

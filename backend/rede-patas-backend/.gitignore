@@ -55,3 +55,15 @@ CodeCoverage/
 *.VisualState.xml
 TestResult.xml
 nunit-*.xml
+
+# Pastas de compilação
+bin/
+obj/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# Configurações locais
+appsettings.Development.json

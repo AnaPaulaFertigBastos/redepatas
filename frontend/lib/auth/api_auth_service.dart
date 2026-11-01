@@ -23,6 +23,37 @@ class ApiAuthService implements AuthService {
       Uri.parse('${baseUrl.replaceFirst(RegExp(r'/$'), '')}$path');
 
   @override
+  Future<AuthSession> register(
+    String name,
+    String email,
+    String password,
+  ) async {
+    final response = await _client.post(
+      _uri('/api/auth/register'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        'name': name.trim(),
+        'email': email.trim().toLowerCase(),
+        'password': password,
+      }),
+    );
+    if (response.statusCode == 409) {
+      throw const AuthException(
+        'Este e-mail já está cadastrado. Entre com sua conta.',
+      );
+    }
+    if (response.statusCode == 400) {
+      throw const AuthException(
+        'Confira os dados: nome, e-mail e senha de 8 a 128 caracteres.',
+      );
+    }
+    _requireSuccess(response);
+    final session = _sessionFromResponse(response);
+    await store.write(session.toJson());
+    return session;
+  }
+
+  @override
   Future<AuthSession> signIn(String email, String password) async {
     final response = await _client.post(
       _uri('/api/auth/login'),

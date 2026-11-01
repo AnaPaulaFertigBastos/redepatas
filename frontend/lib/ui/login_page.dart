@@ -16,6 +16,9 @@ class _LoginPageState extends State<LoginPage> {
   final formKey = GlobalKey<FormState>();
   final email = TextEditingController();
   final password = TextEditingController();
+  final name = TextEditingController();
+  final confirmPassword = TextEditingController();
+  bool registering = false;
   bool obscurePassword = true;
   bool busy = false;
   String? errorMessage;
@@ -24,6 +27,8 @@ class _LoginPageState extends State<LoginPage> {
   void dispose() {
     email.dispose();
     password.dispose();
+    name.dispose();
+    confirmPassword.dispose();
     super.dispose();
   }
 
@@ -34,10 +39,18 @@ class _LoginPageState extends State<LoginPage> {
       errorMessage = null;
     });
     try {
-      await widget.auth.signIn(
-        demo ? MockAuthService.demoEmail : email.text.trim(),
-        demo ? MockAuthService.demoPassword : password.text,
-      );
+      if (registering && !demo) {
+        await widget.auth.register(
+          name.text.trim(),
+          email.text.trim(),
+          password.text,
+        );
+      } else {
+        await widget.auth.signIn(
+          demo ? MockAuthService.demoEmail : email.text.trim(),
+          demo ? MockAuthService.demoPassword : password.text,
+        );
+      }
     } catch (error) {
       if (mounted) setState(() => errorMessage = error.toString());
     } finally {
@@ -107,18 +120,20 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 const SizedBox(height: 30),
-                const Text(
-                  'Bem-vindo de volta',
-                  style: TextStyle(
+                Text(
+                  registering ? 'Crie sua conta' : 'Bem-vindo de volta',
+                  style: const TextStyle(
                     color: ink,
                     fontSize: 25,
                     fontWeight: FontWeight.w900,
                   ),
                 ),
                 const SizedBox(height: 6),
-                const Text(
-                  'Entre para registrar pontos e acompanhar a rede.',
-                  style: TextStyle(color: muted, fontSize: 13),
+                Text(
+                  registering
+                      ? 'Faça parte da rede de cuidado com os animais.'
+                      : 'Entre para registrar pontos e acompanhar a rede.',
+                  style: const TextStyle(color: muted, fontSize: 13),
                 ),
                 const SizedBox(height: 25),
                 Form(
@@ -126,8 +141,26 @@ class _LoginPageState extends State<LoginPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
+                      if (registering) ...[
+                        TextFormField(
+                          controller: name,
+                          enabled: !busy,
+                          textCapitalization: TextCapitalization.words,
+                          autofillHints: const [AutofillHints.name],
+                          maxLength: 150,
+                          decoration: const InputDecoration(
+                            labelText: 'Nome',
+                            prefixIcon: Icon(Icons.person_outline_rounded),
+                          ),
+                          validator: (value) => (value?.trim().length ?? 0) < 2
+                              ? 'Informe seu nome com pelo menos 2 caracteres.'
+                              : null,
+                        ),
+                        const SizedBox(height: 12),
+                      ],
                       TextFormField(
                         controller: email,
+                        enabled: !busy,
                         keyboardType: TextInputType.emailAddress,
                         autofillHints: const [AutofillHints.email],
                         decoration: const InputDecoration(
@@ -136,7 +169,9 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         validator: (value) {
                           final text = value?.trim() ?? '';
-                          return text.contains('@') && text.contains('.')
+                          return text.length <= 254 &&
+                                  RegExp(r'^[^\s@]+@[^\s@]+\.[^\s@]+$')
+                                      .hasMatch(text)
                               ? null
                               : 'Informe um e-mail válido.';
                         },
@@ -144,8 +179,13 @@ class _LoginPageState extends State<LoginPage> {
                       const SizedBox(height: 12),
                       TextFormField(
                         controller: password,
+                        enabled: !busy,
                         obscureText: obscurePassword,
-                        autofillHints: const [AutofillHints.password],
+                        autofillHints: [
+                          registering
+                              ? AutofillHints.newPassword
+                              : AutofillHints.password,
+                        ],
                         decoration: InputDecoration(
                           labelText: 'Senha',
                           prefixIcon: const Icon(Icons.lock_outline_rounded),
@@ -160,13 +200,39 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                         ),
-                        validator: (value) => (value?.isNotEmpty ?? false)
-                            ? null
-                            : 'Informe sua senha.',
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Informe sua senha.';
+                          }
+                          if (registering &&
+                              (value.length < 8 || value.length > 128)) {
+                            return 'Use de 8 a 128 caracteres.';
+                          }
+                          return null;
+                        },
                         onFieldSubmitted: (_) {
                           if (!busy) submit();
                         },
                       ),
+                      if (registering) ...[
+                        const SizedBox(height: 12),
+                        TextFormField(
+                          controller: confirmPassword,
+                          enabled: !busy,
+                          obscureText: obscurePassword,
+                          autofillHints: const [AutofillHints.newPassword],
+                          decoration: const InputDecoration(
+                            labelText: 'Confirmar senha',
+                            prefixIcon: Icon(Icons.lock_outline_rounded),
+                          ),
+                          validator: (value) => value == password.text
+                              ? null
+                              : 'As senhas não coincidem.',
+                          onFieldSubmitted: (_) {
+                            if (!busy) submit();
+                          },
+                        ),
+                      ],
                     ],
                   ),
                 ),
@@ -201,16 +267,38 @@ class _LoginPageState extends State<LoginPage> {
                               color: Colors.white,
                             ),
                           )
-                        : const Text(
-                            'Entrar',
-                            style: TextStyle(
+                        : Text(
+                            registering ? 'Criar conta' : 'Entrar',
+                            style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 16,
                             ),
                           ),
                   ),
                 ),
-                if (widget.demoMode) ...[
+                TextButton(
+                  onPressed: busy
+                      ? null
+                      : () => setState(() {
+                          registering = !registering;
+                          errorMessage = null;
+                          password.clear();
+                          confirmPassword.clear();
+                          formKey.currentState?.reset();
+                        }),
+                  child: Text(
+                    registering
+                        ? 'Já tem uma conta? Entrar'
+                        : 'Não tem uma conta? Registre-se',
+                  ),
+                ),
+                if (widget.demoMode && registering)
+                  const Text(
+                    'Você está no modo de demonstração. Para salvar seu cadastro, conecte o app à API.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: muted, fontSize: 12),
+                  ),
+                if (widget.demoMode && !registering) ...[
                   const SizedBox(height: 18),
                   const Row(
                     children: [

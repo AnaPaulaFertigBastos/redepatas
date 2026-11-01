@@ -48,6 +48,13 @@ class AuthController extends ChangeNotifier {
     }
   }
 
+  Future<void> register(String name, String email, String password) async {
+    session = await service.register(name, email, password);
+    status = AuthStatus.signedIn;
+    _scheduleExpiry();
+    notifyListeners();
+  }
+
   void _scheduleExpiry() {
     _expiryTimer?.cancel();
     final current = session;

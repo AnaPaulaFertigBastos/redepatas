@@ -18,6 +18,8 @@ Na tela de login, toque em **Entrar com conta de demonstração** ou use `volunt
 
 ## Login e sessão
 
+Na tela de acesso, **Registre-se** abre o formulário de nome, e-mail, senha e confirmação de senha. Com `API_BASE_URL` configurada, o cadastro é salvo na tabela `usuario` e inicia a sessão automaticamente. Sem API, o modo de demonstração informa que o cadastro real exige conexão. Veja a [configuração do backend e das migrações](../backend/rede-patas-backend/README.md).
+
 - `lib/auth/auth_controller.dart` é a fonte de verdade do estado de autenticação para o frontend. Ao abrir o app, ele restaura a sessão antes de escolher entre login e mapa. Após entrar, mantém o usuário em memória e avisa as telas; ao sair, apaga a sessão e volta ao login.
 - `lib/auth/session_store.dart` salva o JSON da sessão com `flutter_secure_storage` (armazenamento protegido no Android/iOS). Guarda identificação do usuário, token de acesso, token de renovação e expiração. **A senha nunca é salva.**
 - `lib/auth/auth_service.dart` é a implementação mock. Ela aceita apenas a conta de demonstração e gera tokens fictícios que expiram em sete dias. Isso controla a navegação, mas não autentica um usuário real.
@@ -28,6 +30,7 @@ Contrato esperado do backend:
 
 | Método | Rota | Corpo/resposta |
 | --- | --- | --- |
+| POST | `/api/auth/register` | Recebe `name`, `email`, `password`; cria usuário e devolve sessão (201); e-mail duplicado (409) |
 | POST | `/api/auth/login` | Recebe `email`, `password`; devolve usuário e tokens |
 | GET | `/api/auth/me` | Valida `Authorization: Bearer <accessToken>`; responde 200 ou 401 |
 | POST | `/api/auth/refresh` | Recebe `refreshToken`; devolve novos tokens (rotação) ou 401 |
@@ -88,7 +91,7 @@ Os alertas atuais são calculados dentro do aplicativo a partir do raio e dos po
 ## Limites do protótipo
 
 - Os dados iniciais e as regiões de avistamento são ilustrativos.
-- O login mock não valida usuários reais; cadastro de contas e API C# ainda não foram criados.
+- O login mock não valida usuários reais; cadastro e autenticação reais exigem a API C# e a migração do PostgreSQL.
 - Os pontos e as preferências não são persistidos; o envio de push depende de projeto Firebase configurado e backend, ainda ausentes.
 - Fotos mockadas são URLs externas de demonstração; fotos adicionadas ficam na memória.
 - O filtro de proximidade e a distância são calculados no aparelho para o conjunto pequeno de mocks.

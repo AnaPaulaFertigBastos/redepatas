@@ -7,6 +7,7 @@ import 'session_store.dart';
 abstract class AuthService {
   Future<AuthSession?> restore();
   Future<AuthSession> signIn(String email, String password);
+  Future<AuthSession> register(String name, String email, String password);
   Future<void> signOut();
 }
 
@@ -16,6 +17,17 @@ class MockAuthService implements AuthService {
 
   static const demoEmail = 'voluntario@redepatas.app';
   static const demoPassword = '123456';
+
+  @override
+  Future<AuthSession> register(
+    String name,
+    String email,
+    String password,
+  ) async {
+    throw const AuthException(
+      'O cadastro precisa da API conectada. No modo de demonstração, use a conta de demonstração.',
+    );
+  }
 
   @override
   Future<AuthSession?> restore() async {

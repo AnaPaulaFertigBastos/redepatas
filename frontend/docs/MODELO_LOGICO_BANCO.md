@@ -1,8 +1,10 @@
 # Modelo lógico do banco de dados — RedePatas
 
-O diagrama editável está em [`modelo_logico_redepatas.mmd`](modelo_logico_redepatas.mmd) (Mermaid, edição por texto) e [`modelo_logico_redepatas.drawio`](modelo_logico_redepatas.drawio) (diagrams.net, edição visual). Ambos representam o mesmo modelo proposto para o futuro backend C#. Este documento é a especificação do modelo; **o banco e as migrações ainda não foram implementados**.
+O diagrama editável está em [`modelo_logico_redepatas.mmd`](modelo_logico_redepatas.mmd) (Mermaid, edição por texto) e [`modelo_logico_redepatas.drawio`](modelo_logico_redepatas.drawio) (diagrams.net, edição visual). Ambos representam o mesmo modelo do backend C#. Este documento é a especificação do modelo; a implementação atual cobre as tabelas de usuário e renovação de sessão.
 
 ## Como editar
+
+**Implementação parcial:** o backend C# agora implementa `USUARIO` e `TOKEN_RENOVACAO`, com migração do PostgreSQL e endpoints de cadastro e autenticação. As outras entidades continuam propostas. Veja [como aplicar a migração](../../backend/rede-patas-backend/README.md).
 
 - Abra o `.drawio` em [diagrams.net](https://app.diagrams.net/), mova caixas e conexões e salve o próprio arquivo. Cada entidade e ligação é um objeto editável.
 - Edite o `.mmd` em qualquer editor de texto com visualização Mermaid. Ao mudar o modelo, atualize também a outra versão do diagrama e este documento.
