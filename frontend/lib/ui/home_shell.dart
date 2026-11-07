@@ -66,7 +66,10 @@ class _HomeShellState extends State<HomeShell> {
         ),
       );
     });
-    WidgetsBinding.instance.addPostFrameCallback((_) => _openPushPoint());
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await _loadData();
+      _openPushPoint();
+    });
   }
 
   @override
@@ -77,6 +80,25 @@ class _HomeShellState extends State<HomeShell> {
     _pushMessages?.cancel();
     mapController.dispose();
     super.dispose();
+  }
+
+  Future<void> _loadData() async {
+    try {
+      await widget.repository.load();
+    } catch (_) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text(
+            'Não foi possível carregar os dados. Confira sua conexão.',
+          ),
+          action: SnackBarAction(
+            label: 'Tentar novamente',
+            onPressed: _loadData,
+          ),
+        ),
+      );
+    }
   }
 
   void _refresh() {

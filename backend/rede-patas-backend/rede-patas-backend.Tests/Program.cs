@@ -43,6 +43,7 @@ try
     start.ArgumentList.Add($"http://127.0.0.1:{port}");
     start.Environment["ConnectionStrings__Postgres"] = testSettings.ConnectionString;
     start.Environment["ASPNETCORE_ENVIRONMENT"] = "Development";
+    start.Environment["RateLimiting__PermitLimit"] = "200";
     server = Process.Start(start)!;
     var output = server.StandardOutput.ReadToEndAsync();
     var errors = server.StandardError.ReadToEndAsync();
@@ -70,6 +71,68 @@ try
     Check(duplicate.StatusCode == HttpStatusCode.Conflict, "duplicate email rejected");
     http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", session.GetProperty("accessToken").GetString());
     Check((await http.GetAsync("/api/auth/me")).StatusCode == HttpStatusCode.OK, "registration access token authenticates");
+    http.DefaultRequestHeaders.Authorization = null;
+    var pointBody = new { name = "Ponto Central", description = "Água e ração disponíveis",
+        latitude = -25.4304m, longitude = -49.2713m, address = "Praça Central",
+        schedule = "Diariamente", maintainer = "Comunidade", animalCount = 3,
+        resources = new[] { "water", "food" } };
+    Check((await http.PostAsJsonAsync("/api/pontos", pointBody)).StatusCode == HttpStatusCode.Unauthorized,
+        "point creation requires authentication");
+    http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", session.GetProperty("accessToken").GetString());
+    var invalidPoint = await http.PostAsJsonAsync("/api/pontos", new { name = "X", description = "Local",
+        latitude = 91, longitude = 0, animalCount = -1, resources = new[] { "water" } });
+    Check(invalidPoint.StatusCode == HttpStatusCode.BadRequest, "invalid point rejected");
+    var createdPoint = await http.PostAsJsonAsync("/api/pontos", pointBody);
+    Check(createdPoint.StatusCode == HttpStatusCode.Created, "point creation succeeds");
+    var pointId = (await createdPoint.Content.ReadFromJsonAsync<JsonElement>()).GetProperty("id").GetGuid();
+    var persistedPoint = await db.PontosApoio.Include(p => p.Recursos).SingleAsync(p => p.Id == pointId);
+    Check(persistedPoint.CriadoPorUsuarioId == user.Id && persistedPoint.Recursos.Count == 2 &&
+          persistedPoint.Latitude == pointBody.latitude && persistedPoint.QuantidadeAnimaisEstimada == 3,
+        "point and resources persisted with authenticated author");
+    var listedPoints = await http.GetFromJsonAsync<JsonElement>("/api/pontos");
+    Check(listedPoints.GetArrayLength() == 1 && listedPoints[0].GetProperty("id").GetGuid() == pointId,
+        "saved point is returned by list endpoint");
+    http.DefaultRequestHeaders.Authorization = null;
+    Check((await http.PutAsync($"/api/me/followed-points/{pointId}", null)).StatusCode == HttpStatusCode.Unauthorized, "following requires login");
+    Check((await http.PostAsJsonAsync($"/api/pontos/{pointId}/maintenance", new { status = "supplied" })).StatusCode == HttpStatusCode.Unauthorized, "maintenance requires login");
+    http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", session.GetProperty("accessToken").GetString());
+    Check((await http.PutAsync($"/api/me/followed-points/{pointId}", null)).StatusCode == HttpStatusCode.NoContent, "follow succeeds");
+    Check((await http.PutAsync($"/api/me/followed-points/{pointId}", null)).StatusCode == HttpStatusCode.NoContent && await db.Acompanhamentos.CountAsync() == 1, "following is idempotent");
+    var secondRegistration = await http.PostAsJsonAsync("/api/auth/register", new { name = "Bruno", email = "bruno@example.com", password = "senha1234" });
+    var secondSession = await secondRegistration.Content.ReadFromJsonAsync<JsonElement>();
+    http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", secondSession.GetProperty("accessToken").GetString());
+    Check((await http.GetFromJsonAsync<JsonElement>("/api/me/followed-points")).GetArrayLength() == 0, "following is private to each user");
+    await http.DeleteAsync($"/api/me/followed-points/{pointId}");
+    Check(await db.Acompanhamentos.CountAsync() == 1, "another user cannot remove the original follow");
+    Check((await http.PostAsJsonAsync($"/api/pontos/{pointId}/maintenance", new { status = "inactive" })).StatusCode == HttpStatusCode.BadRequest, "maintenance cannot inactivate points");
+    var maintained = await http.PostAsJsonAsync($"/api/pontos/{pointId}/maintenance", new { status = "needsWater" });
+    Check(maintained.StatusCode == HttpStatusCode.OK, "another authenticated user can register maintenance");
+    await db.Entry(persistedPoint).ReloadAsync();
+    var eventRecord = await db.Manutencoes.SingleAsync();
+    Check(persistedPoint.SituacaoGeral == "needsWater" && eventRecord.UsuarioId != user.Id &&
+        eventRecord.CriadaEm == persistedPoint.AtualizadoEm, "status and history persisted with actual author and server date");
+    var history = await http.GetFromJsonAsync<JsonElement>("/api/manutencoes");
+    Check(history[0].GetProperty("author").GetString() == "Bruno", "history returns real author");
+    http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", session.GetProperty("accessToken").GetString());
+    Check((await http.GetFromJsonAsync<JsonElement>("/api/me/followed-points"))[0].GetGuid() == pointId, "follow survives a new request");
+    await http.DeleteAsync($"/api/me/followed-points/{pointId}");
+    await http.DeleteAsync($"/api/me/followed-points/{pointId}");
+    Check(await db.Acompanhamentos.CountAsync() == 0, "unfollow is persistent and idempotent");
+    var photoPoint = await http.PostAsJsonAsync("/api/pontos", new {
+        pointBody.name, pointBody.description, pointBody.latitude, pointBody.longitude,
+        pointBody.address, pointBody.schedule, pointBody.maintainer, pointBody.animalCount,
+        pointBody.resources,
+        photoBase64 = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAusB9Y9Yt3sAAAAASUVORK5CYII="
+    });
+    Check(photoPoint.StatusCode == HttpStatusCode.Created, "point with photo succeeds");
+    var photoPath = (await photoPoint.Content.ReadFromJsonAsync<JsonElement>()).GetProperty("photoUrl").GetString()!;
+    try {
+        Check((await http.GetAsync(photoPath)).StatusCode == HttpStatusCode.OK, "saved photo is served");
+        Check(await db.FotosPonto.CountAsync() == 1, "photo metadata persisted");
+    }
+    finally {
+        File.Delete(Path.Combine(apiDirectory, "wwwroot", photoPath.TrimStart('/').Replace('/', Path.DirectorySeparatorChar)));
+    }
     var badLogin = await http.PostAsJsonAsync("/api/auth/login", new { email = user.Email, password = "wrong" });
     Check(badLogin.StatusCode == HttpStatusCode.Unauthorized, "wrong password rejected");
     var login = await http.PostAsJsonAsync("/api/auth/login", new { email = "ANA@example.com", password = "senha1234" });
@@ -82,7 +145,7 @@ try
     var newRefresh = newSession.GetProperty("refreshToken").GetString();
     Check((await http.PostAsJsonAsync("/api/auth/logout", new { refreshToken = newRefresh })).StatusCode == HttpStatusCode.NoContent, "logout succeeds");
     Check((await http.PostAsJsonAsync("/api/auth/refresh", new { refreshToken = newRefresh })).StatusCode == HttpStatusCode.Unauthorized, "logout revokes refresh token");
-    Console.WriteLine("All authentication integration checks passed.");
+    Console.WriteLine("All authentication and point integration checks passed.");
 }
 finally
 {

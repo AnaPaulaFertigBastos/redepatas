@@ -1,5 +1,7 @@
 # RedePatas
 
+> Atualização de 06/11/2026: com `API_BASE_URL`, cadastro/leitura de pontos, fotos, manutenção, histórico e acompanhamento já usam a API e o PostgreSQL. Animais ainda são demonstrativos. O plano atualizado e os limites estão em [docs/ESTADO_ATUAL.md](docs/ESTADO_ATUAL.md). As seções de contrato sugerido abaixo registram propostas para os fluxos ainda não implementados; para rotas existentes, use o [README do backend](../backend/rede-patas-backend/README.md).
+
 Protótipo Flutter para localizar e manter pontos de água, ração e abrigo para animais em situação de rua. A interface está em português e usa dados fictícios de Curitiba.
 
 O inventário das funcionalidades, a estrutura completa dos arquivos e o plano de trabalho estão em [docs/ESTADO_ATUAL.md](docs/ESTADO_ATUAL.md).
@@ -23,7 +25,7 @@ Na tela de acesso, **Registre-se** abre o formulário de nome, e-mail, senha e c
 - `lib/auth/auth_controller.dart` é a fonte de verdade do estado de autenticação para o frontend. Ao abrir o app, ele restaura a sessão antes de escolher entre login e mapa. Após entrar, mantém o usuário em memória e avisa as telas; ao sair, apaga a sessão e volta ao login.
 - `lib/auth/session_store.dart` salva o JSON da sessão com `flutter_secure_storage` (armazenamento protegido no Android/iOS). Guarda identificação do usuário, token de acesso, token de renovação e expiração. **A senha nunca é salva.**
 - `lib/auth/auth_service.dart` é a implementação mock. Ela aceita apenas a conta de demonstração e gera tokens fictícios que expiram em sete dias. Isso controla a navegação, mas não autentica um usuário real.
-- `lib/auth/api_auth_service.dart` já implementa o contrato HTTP de login, validação da sessão, renovação e logout. Para ativá-lo, execute `flutter run --dart-define=API_BASE_URL=https://seu-servidor`. Sem essa variável, o app usa o mock. Os dados de pontos e animais continuam mockados até conectar `RedePatasRepository` à API.
+- `lib/auth/api_auth_service.dart` já implementa o contrato HTTP de login, validação da sessão, renovação e logout. Para ativá-lo, execute `flutter run --dart-define=API_BASE_URL=https://seu-servidor`. Sem essa variável, o app usa o mock. Os pontos, o histórico e o acompanhamento usam `ApiRedePatasRepository`; animais continuam mockados.
 - Se o token de acesso vencer, o controlador chama `restore()`: no modo API, o serviço tenta renovar a sessão; se a renovação for rejeitada, remove os tokens e apresenta o login. O backend continua sendo a autoridade: cada endpoint protegido deve validar o token, independentemente do que a interface mostra.
 
 Contrato esperado do backend:
@@ -60,7 +62,7 @@ Na API ASP.NET Core, use senha com hash (por exemplo, ASP.NET Core Identity), ac
 | `lib/auth/` | Login, sessão, armazenamento protegido e cliente HTTP de autenticação |
 | `lib/ui/` | Mapa, listas, cadastro, detalhes, alertas e histórico |
 
-Para conectar a API C#, implemente `RedePatasRepository` com chamadas HTTP e substitua `MockRedePatasRepository` em `lib/app/redepatas_app.dart`. Mantenha os modelos e as telas. A implementação atual usa `ChangeNotifier`; após cada resposta da API, atualize o estado e chame `notifyListeners()`.
+A seleção entre `ApiRedePatasRepository` e `MockRedePatasRepository` em `lib/app/redepatas_app.dart` já depende de `API_BASE_URL`. Mantenha os modelos e as telas. A implementação atual usa `ChangeNotifier`; após cada resposta da API, atualize o estado e chame `notifyListeners()`.
 
 ## Contrato sugerido para a API ASP.NET Core
 
@@ -92,6 +94,6 @@ Os alertas atuais são calculados dentro do aplicativo a partir do raio e dos po
 
 - Os dados iniciais e as regiões de avistamento são ilustrativos.
 - O login mock não valida usuários reais; cadastro e autenticação reais exigem a API C# e a migração do PostgreSQL.
-- Os pontos e as preferências não são persistidos; o envio de push depende de projeto Firebase configurado e backend, ainda ausentes.
+- Sem API os pontos não são persistidos; preferências continuam em memória; o envio de push depende de projeto Firebase configurado e backend, ainda ausentes.
 - Fotos mockadas são URLs externas de demonstração; fotos adicionadas ficam na memória.
 - O filtro de proximidade e a distância são calculados no aparelho para o conjunto pequeno de mocks.

@@ -65,5 +65,7 @@ obj/
 *.user
 *.suo
 
+wwwroot/
+
 # Configurações locais
 appsettings.Development.json

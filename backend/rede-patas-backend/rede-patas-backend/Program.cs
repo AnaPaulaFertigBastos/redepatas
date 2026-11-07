@@ -85,7 +85,7 @@ builder.Services.AddRateLimiter(options =>
 
     options.AddFixedWindowLimiter("fixed", opt =>
     {
-        opt.PermitLimit = 20;
+        opt.PermitLimit = builder.Configuration.GetValue<int?>("RateLimiting:PermitLimit") ?? 20;
         opt.Window = TimeSpan.FromMinutes(1);
 
         opt.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
@@ -130,6 +130,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+Directory.CreateDirectory(Path.Combine(app.Environment.ContentRootPath, "wwwroot"));
+app.UseStaticFiles();
 
 app.UseRouting();
 

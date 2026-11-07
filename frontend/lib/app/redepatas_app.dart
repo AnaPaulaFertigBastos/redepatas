@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../data/repository.dart';
+import '../data/api_redepatas_repository.dart';
 import '../auth/auth_controller.dart';
 import '../auth/api_auth_service.dart';
 import '../auth/auth_service.dart';
@@ -19,7 +20,7 @@ class RedePatasApp extends StatefulWidget {
 
 class _RedePatasAppState extends State<RedePatasApp> {
   static const apiBaseUrl = String.fromEnvironment('API_BASE_URL');
-  final repository = MockRedePatasRepository();
+  late final RedePatasRepository repository;
   late final AuthController auth;
   late final bool ownsAuth;
   @override
@@ -34,9 +35,11 @@ class _RedePatasAppState extends State<RedePatasApp> {
               ? MockAuthService(store)
               : ApiAuthService(baseUrl: apiBaseUrl, store: store),
         );
+    repository = apiBaseUrl.isEmpty
+        ? MockRedePatasRepository()
+        : ApiRedePatasRepository(baseUrl: apiBaseUrl, auth: auth);
     auth.addListener(_syncPush);
     auth.restore();
-    repository.load();
   }
 
   void _syncPush() {
@@ -104,7 +107,12 @@ class _RedePatasAppState extends State<RedePatasApp> {
             demoMode: auth.service is MockAuthService,
           );
         }
-        return HomeShell(repository: repository, auth: auth, push: widget.push);
+        return HomeShell(
+          key: ValueKey(auth.session!.userId),
+          repository: repository,
+          auth: auth,
+          push: widget.push,
+        );
       },
     ),
   );

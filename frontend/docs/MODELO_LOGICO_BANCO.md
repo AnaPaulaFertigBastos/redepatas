@@ -4,7 +4,7 @@ O diagrama editável está em [`modelo_logico_redepatas.mmd`](modelo_logico_rede
 
 ## Como editar
 
-**Implementação parcial:** o backend C# agora implementa `USUARIO` e `TOKEN_RENOVACAO`, com migração do PostgreSQL e endpoints de cadastro e autenticação. As outras entidades continuam propostas. Veja [como aplicar a migração](../../backend/rede-patas-backend/README.md).
+**Implementação parcial:** o backend C# implementa `USUARIO`, `TOKEN_RENOVACAO`, `PONTO_APOIO`, `RECURSO`, `PONTO_RECURSO` e fotos vinculadas a pontos, com migrações PostgreSQL. Cadastro e consulta de pontos estão disponíveis; as outras entidades continuam propostas. Veja [como aplicar as migrações](../../backend/rede-patas-backend/README.md).
 
 - Abra o `.drawio` em [diagrams.net](https://app.diagrams.net/), mova caixas e conexões e salve o próprio arquivo. Cada entidade e ligação é um objeto editável.
 - Edite o `.mmd` em qualquer editor de texto com visualização Mermaid. Ao mudar o modelo, atualize também a outra versão do diagrama e este documento.
